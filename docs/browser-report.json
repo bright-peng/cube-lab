@@ -1,0 +1,51 @@
+{
+  "checksPassed": 35,
+  "checks": [
+    "Initial solved cube and 54 net stickers",
+    "No horizontal desktop overflow",
+    "R changes state",
+    "All 54 2D stickers match the model",
+    "Keyboard inverse restores cube",
+    "Undo restores prior state",
+    "Redo restores solved state",
+    "Custom repeated trigger plays correctly",
+    "Scramble is nontrivial",
+    "Solver computes from current state without changing it",
+    "Web Worker was created",
+    "Solution single-step advances one move",
+    "Solution reverse step is exact",
+    "Pause remains paused after in-flight move completes",
+    "Full seven-stage replay solves the cube",
+    "Matched lesson 1 solves its example",
+    "Matched lesson 2 solves its example",
+    "Matched lesson 3 solves its example",
+    "Matched lesson 4 solves its example",
+    "Matched lesson 5 solves its example",
+    "Matched lesson 6 solves its example",
+    "Matched lesson 7 solves its example",
+    "Ring view has 54 linked stickers",
+    "Sticker identity can be selected in ring view",
+    "Expanded ring dialog works",
+    "Dragging changes the rendered 3D camera",
+    "Import restores a validated state",
+    "Impossible imported edge flip is rejected",
+    "Invalid algorithm input does not mutate the cube",
+    "Seven formula lessons are present",
+    "Four first-principles notes are present",
+    "No page runtime exceptions",
+    "No external network requests in offline build",
+    "No horizontal mobile overflow",
+    "Mobile ring view works"
+  ],
+  "runtimeErrors": [],
+  "externalNetworkRequests": [],
+  "internalResourceRequests": [
+    "blob:null/6257d756-d15b-4265-9e0c-d3ebae71ee6b"
+  ],
+  "workerCount": 1,
+  "limitations": [
+    "Browser policy prohibits HTTP/file navigation in this sandbox; tested the exact standalone HTML via set_content with network disabled.",
+    "Native localStorage and real file:// double-click opening were not verified in this environment.",
+    "Only bundled Chromium was tested, not Safari or Firefox."
+  ]
+}

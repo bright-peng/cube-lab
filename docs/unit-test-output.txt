@@ -1,0 +1,237 @@
+
+> cube-lab@1.0.0 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# {"randomStatesTested":200,"averageMoves":106.17,"maxMoves":145}
+# Subtest: U: four turns are identity
+ok 1 - U: four turns are identity
+  ---
+  duration_ms: 1.495002
+  type: 'test'
+  ...
+# Subtest: R: four turns are identity
+ok 2 - R: four turns are identity
+  ---
+  duration_ms: 0.108783
+  type: 'test'
+  ...
+# Subtest: F: four turns are identity
+ok 3 - F: four turns are identity
+  ---
+  duration_ms: 0.124357
+  type: 'test'
+  ...
+# Subtest: D: four turns are identity
+ok 4 - D: four turns are identity
+  ---
+  duration_ms: 0.070967
+  type: 'test'
+  ...
+# Subtest: L: four turns are identity
+ok 5 - L: four turns are identity
+  ---
+  duration_ms: 0.122493
+  type: 'test'
+  ...
+# Subtest: B: four turns are identity
+ok 6 - B: four turns are identity
+  ---
+  duration_ms: 0.067231
+  type: 'test'
+  ...
+# Subtest: U: inverse and legality
+ok 7 - U: inverse and legality
+  ---
+  duration_ms: 0.549354
+  type: 'test'
+  ...
+# Subtest: U2: inverse and legality
+ok 8 - U2: inverse and legality
+  ---
+  duration_ms: 0.259388
+  type: 'test'
+  ...
+# Subtest: U': inverse and legality
+ok 9 - U': inverse and legality
+  ---
+  duration_ms: 0.320531
+  type: 'test'
+  ...
+# Subtest: R: inverse and legality
+ok 10 - R: inverse and legality
+  ---
+  duration_ms: 0.33314
+  type: 'test'
+  ...
+# Subtest: R2: inverse and legality
+ok 11 - R2: inverse and legality
+  ---
+  duration_ms: 0.545658
+  type: 'test'
+  ...
+# Subtest: R': inverse and legality
+ok 12 - R': inverse and legality
+  ---
+  duration_ms: 0.139569
+  type: 'test'
+  ...
+# Subtest: F: inverse and legality
+ok 13 - F: inverse and legality
+  ---
+  duration_ms: 0.225358
+  type: 'test'
+  ...
+# Subtest: F2: inverse and legality
+ok 14 - F2: inverse and legality
+  ---
+  duration_ms: 0.111977
+  type: 'test'
+  ...
+# Subtest: F': inverse and legality
+ok 15 - F': inverse and legality
+  ---
+  duration_ms: 0.102384
+  type: 'test'
+  ...
+# Subtest: D: inverse and legality
+ok 16 - D: inverse and legality
+  ---
+  duration_ms: 0.098137
+  type: 'test'
+  ...
+# Subtest: D2: inverse and legality
+ok 17 - D2: inverse and legality
+  ---
+  duration_ms: 0.157826
+  type: 'test'
+  ...
+# Subtest: D': inverse and legality
+ok 18 - D': inverse and legality
+  ---
+  duration_ms: 0.100451
+  type: 'test'
+  ...
+# Subtest: L: inverse and legality
+ok 19 - L: inverse and legality
+  ---
+  duration_ms: 0.097116
+  type: 'test'
+  ...
+# Subtest: L2: inverse and legality
+ok 20 - L2: inverse and legality
+  ---
+  duration_ms: 0.091708
+  type: 'test'
+  ...
+# Subtest: L': inverse and legality
+ok 21 - L': inverse and legality
+  ---
+  duration_ms: 0.090216
+  type: 'test'
+  ...
+# Subtest: B: inverse and legality
+ok 22 - B: inverse and legality
+  ---
+  duration_ms: 0.574992
+  type: 'test'
+  ...
+# Subtest: B2: inverse and legality
+ok 23 - B2: inverse and legality
+  ---
+  duration_ms: 0.108222
+  type: 'test'
+  ...
+# Subtest: B': inverse and legality
+ok 24 - B': inverse and legality
+  ---
+  duration_ms: 0.128873
+  type: 'test'
+  ...
+# Subtest: Parser supports compact notation, rejects unsupported tokens
+ok 25 - Parser supports compact notation, rejects unsupported tokens
+  ---
+  duration_ms: 0.419589
+  type: 'test'
+  ...
+# Subtest: Known right trigger has order 6
+ok 26 - Known right trigger has order 6
+  ---
+  duration_ms: 0.262894
+  type: 'test'
+  ...
+# Subtest: F turns U bottom row to R left column
+ok 27 - F turns U bottom row to R left column
+  ---
+  duration_ms: 0.119128
+  type: 'test'
+  ...
+# Subtest: Reject illegal flip, twist, parity and non-permutation
+ok 28 - Reject illegal flip, twist, parity and non-permutation
+  ---
+  duration_ms: 0.312448
+  type: 'test'
+  ...
+# Subtest: Complete pattern table cardinalities
+ok 29 - Complete pattern table cardinalities
+  ---
+  duration_ms: 43.580579
+  type: 'test'
+  ...
+# Subtest: Solve 200 independent random-move states with all postconditions
+ok 30 - Solve 200 independent random-move states with all postconditions
+  ---
+  duration_ms: 71.245231
+  type: 'test'
+  ...
+# Subtest: Solved state returns no moves
+ok 31 - Solved state returns no moves
+  ---
+  duration_ms: 0.182925
+  type: 'test'
+  ...
+# Subtest: Stage 2 macros preserve the previous stage
+ok 32 - Stage 2 macros preserve the previous stage
+  ---
+  duration_ms: 0.119209
+  type: 'test'
+  ...
+# Subtest: Stage 3 macros preserve the previous stage
+ok 33 - Stage 3 macros preserve the previous stage
+  ---
+  duration_ms: 0.113551
+  type: 'test'
+  ...
+# Subtest: Stage 4 macros preserve the previous stage
+ok 34 - Stage 4 macros preserve the previous stage
+  ---
+  duration_ms: 0.240541
+  type: 'test'
+  ...
+# Subtest: Stage 5 macros preserve the previous stage
+ok 35 - Stage 5 macros preserve the previous stage
+  ---
+  duration_ms: 0.09347
+  type: 'test'
+  ...
+# Subtest: Stage 6 macros preserve the previous stage
+ok 36 - Stage 6 macros preserve the previous stage
+  ---
+  duration_ms: 0.137045
+  type: 'test'
+  ...
+# Subtest: Stage 7 macros preserve the previous stage
+ok 37 - Stage 7 macros preserve the previous stage
+  ---
+  duration_ms: 0.073821
+  type: 'test'
+  ...
+1..37
+# tests 37
+# suites 0
+# pass 37
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 190.015285
