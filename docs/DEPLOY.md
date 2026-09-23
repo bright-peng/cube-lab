@@ -2,9 +2,9 @@
 
 ## 交付状态
 
-已创建个人私有仓库 [bright-peng/cube-lab](https://github.com/bright-peng/cube-lab)，归属于个人账号 `bright-peng`。自动构建结果与离线版下载见 [Actions](https://github.com/bright-peng/cube-lab/actions)。尚未启用 Pages，也没有部署在线网址。
+个人公开仓库为 [bright-peng/cube-lab](https://github.com/bright-peng/cube-lab)，归属于个人账号 `bright-peng`。Pages 已启用 GitHub Actions 发布，在线网址为 [bright-peng.github.io/cube-lab](https://bright-peng.github.io/cube-lab/)。部署结果与离线版下载见 [Actions](https://github.com/bright-peng/cube-lab/actions)。
 
-当前仓库后续提交改动后运行 `git push origin main` 即可自动构建。下面两种建仓库方案仅用于首次发布其他副本，不要在已有 `origin` 的当前仓库重复执行。
+当前仓库后续提交改动后运行 `git push origin main` 即可自动构建并更新网站。下面两种建仓库方案仅用于首次发布其他副本，不要在已有 `origin` 的当前仓库重复执行。
 
 ## 方案 A：官方 GitHub CLI 发布
 
@@ -48,13 +48,13 @@ git push -u origin main
 
 自动构建由 `.github/workflows/ci.yml` 负责：每次推送、Pull Request 和手动触发都会检查、测试并构建。成功后在 Actions 运行页面的 Artifacts 下载 `cube-lab-offline`，解压得到可离线打开的 `index.html`，保留 14 天。项目没有 npm 依赖，不需要 `npm install`、缓存或额外密钥。
 
-如需公开网站，进入新仓库 `Settings → Pages → Build and deployment → Source → GitHub Actions`，再到 `Actions` 选择 `main` 分支，手动运行 **Deploy Cube Lab to Pages**。
+当前仓库已设置 `Settings → Pages → Build and deployment → Source → GitHub Actions`。推送到 `main` 会自动部署，也可在 `Actions` 选择 `main` 分支，手动运行 **Deploy Cube Lab to Pages**。
 
-`.github/workflows/pages.yml` 会依次运行测试、检查、构建，随后上传 `dist` 并部署。仅接受 `main` 分支的手动触发；Pages 写入权限只授予部署任务。自动构建不依赖 Pages 设置，首次推送不会尝试发布网站。该部署工作流尚未在真实仓库验证。
+`.github/workflows/pages.yml` 会依次运行测试、检查、构建，随后上传 `dist` 并部署。只部署 `main` 分支；Pages 写入权限只授予部署任务。Pull Request 仅运行 CI，不发布网站。
 
 公开仓库可在 GitHub Free 使用 Pages；私有仓库是否可用取决于 GitHub 计划与组织政策，详见 [GitHub Pages 自定义工作流文档](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。不要把私有仓库默认等同于私密网站；站点可见性还需单独确认。
 
-成功后的真实网址由部署步骤输出，并显示在仓库的 Pages 设置中。本文不虚构账号名或可访问 URL。
+成功部署的网址也会显示在运行记录的 `github-pages` 环境与仓库 Pages 设置中。
 
 ## 其他静态托管
 

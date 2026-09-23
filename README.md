@@ -8,6 +8,8 @@
 
 ## 立即使用
 
+直接打开 [Cube Lab 在线版](https://bright-peng.github.io/cube-lab/)，无需下载或安装。推送到 `main` 后，GitHub Actions 会自动测试、构建并更新网站。
+
 ### 本地开发 / 最稳妥的启动方式
 
 需要 Node.js 20 或以上；本次使用 Node.js 22.16.0 测试。无需 `npm install`，本项目没有 npm 运行时依赖。
@@ -114,13 +116,13 @@ python tests/browser_smoke.py
 
 每次推送、Pull Request 或手动运行 **Test and build Cube Lab**，都会执行语法检查、核心测试和单文件构建。成功后可在 Actions 运行页面下载 `cube-lab-offline`，解压得到 `index.html`；产物保留 14 天。此流程不需要启用 Pages，也不需要额外配置密钥。
 
-个人私有仓库：[bright-peng/cube-lab](https://github.com/bright-peng/cube-lab)。后续提交改动后，推送到 `main` 即可触发自动构建：
+个人公开仓库：[bright-peng/cube-lab](https://github.com/bright-peng/cube-lab)。后续提交改动后，推送到 `main` 即可触发自动构建和 Pages 部署：
 
 ```bash
 git push origin main
 ```
 
-构建记录与下载见 [Actions](https://github.com/bright-peng/cube-lab/actions)。尚未启用 Pages 或部署在线网址；更多说明见 [GitHub / Pages 部署指南](docs/DEPLOY.md)。
+构建记录与下载见 [Actions](https://github.com/bright-peng/cube-lab/actions)，在线网址为 [bright-peng.github.io/cube-lab](https://bright-peng.github.io/cube-lab/)。更多说明见 [GitHub / Pages 部署指南](docs/DEPLOY.md)。
 
 ## 当前边界
 
