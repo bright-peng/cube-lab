@@ -69,10 +69,23 @@ export class CubeRenderer {
 }
 const svgNS='http://www.w3.org/2000/svg';
 function svgNode(name,attrs={}){const e=document.createElementNS(svgNS,name);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,String(v));return e;}
+// Three slice families (x/y/z). Each sticker lies on two slice loops;
+// their inner/outer intersection distinguishes the two opposite faces.
+export const RING_CIRCLES=[[134,256],[200,142],[266,256]].flatMap(([x,y],axis)=>[-1,0,1].map(layer=>({x,y,axis,layer,r:105+layer*19})));
+export const RING_POINTS=SLOTS.map(slot=>{
+ const loops=RING_CIRCLES.filter(c=>slot.n[c.axis]===0&&slot.p[c.axis]===c.layer),[a,b]=loops;
+ const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),u=(a.r*a.r-b.r*b.r+d*d)/(2*d),h=Math.sqrt(a.r*a.r-u*u);
+ const mx=a.x+u*dx/d,my=a.y+u*dy/d;
+ const points=[{x:mx-h*dy/d,y:my+h*dx/d},{x:mx+h*dy/d,y:my-h*dx/d}];
+ points.sort((p,q)=>Math.hypot(p.x-200,p.y-218)-Math.hypot(q.x-200,q.y-218));
+ return {...points[slot.n.find(v=>v!==0)===1?0:1],loops};
+});
 export function renderNet(container,state,{mode='net',selected=-1,focus=null,onSelect=()=>{},onTurn=()=>{},labels=true}={}){
- const svg=svgNode('svg',{viewBox:mode==='ring'?'0 0 320 320':'0 0 360 280',role:'img','aria-label':mode==='ring'?'Six concentric rings; one ring per face':'Unfolded cube net'});
+ const focused=container.contains(document.activeElement)?document.activeElement.dataset.slot:undefined;
+ container.classList.toggle('ring-view',mode==='ring');
+ const svg=svgNode('svg',{viewBox:mode==='ring'?'0 0 400 400':'0 0 360 280',role:'group','aria-label':mode==='ring'?'三组交叠圆轨道，54 个交点对应魔方贴纸':'魔方六面展开图'});
  const addSticker=(shape,index,label)=>{
-  shape.setAttribute('fill',COLORS[colorAt(state,index)]);shape.setAttribute('stroke',state[index]===selected?'#ffffff':focus===SLOTS[index].face?'#dbf4ec':'#12202c');shape.setAttribute('stroke-width',state[index]===selected?3:1.7);shape.setAttribute('class','svg-sticker');shape.setAttribute('tabindex','0');shape.setAttribute('role','button');shape.setAttribute('aria-label',`${SLOTS[index].face}${index%9+1} / ${colorAt(state,index)}`);shape.dataset.slot=index;
+  shape.setAttribute('fill',COLORS[colorAt(state,index)]);shape.setAttribute('stroke',state[index]===selected?'#ffffff':focus===SLOTS[index].face?'#dbf4ec':'#12202c');shape.setAttribute('stroke-width',state[index]===selected?3:1.7);shape.setAttribute('class','svg-sticker');shape.setAttribute('tabindex','0');shape.setAttribute('role','button');shape.setAttribute('aria-pressed',String(state[index]===selected));shape.setAttribute('aria-label',`${SLOTS[index].face}${index%9+1} / ${colorAt(state,index)}`);shape.dataset.slot=index;
   const title=svgNode('title');title.textContent=`${SLOTS[index].face}${index%9+1} / ${colorAt(state,index)}`;shape.append(title);shape.addEventListener('click',()=>onSelect(index));shape.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onSelect(index);}});svg.append(shape);if(label)svg.append(label);
  };
  if(mode==='net'){
@@ -84,16 +97,20 @@ export function renderNet(container,state,{mode='net',selected=-1,focus=null,onS
    }
   }
  }else{
-  const cx=160,cy=160;
-  const polar=(r,a)=>[cx+r*Math.cos(a),cy+r*Math.sin(a)];
-  for(let fi=0;fi<6;fi++)for(let i=0;i<9;i++){
-   const r0=25+fi*20.8,r1=r0+17.8,a0=-Math.PI/2+(i-.5)*Math.PI*2/9+.012,a1=-Math.PI/2+(i+.5)*Math.PI*2/9-.012;
-   const p0=polar(r0,a0),p1=polar(r1,a0),p2=polar(r1,a1),p3=polar(r0,a1);
-   const d=`M${p0} L${p1} A${r1},${r1} 0 0 1 ${p2} L${p3} A${r0},${r0} 0 0 0 ${p0} Z`;
-   const mid=polar((r0+r1)/2,(a0+a1)/2),t=svgNode('text',{x:mid[0],y:mid[1]+3,'text-anchor':'middle','font-size':fi<2?7:9,'font-family':'ui-monospace,monospace','font-weight':600,fill:'#152633','pointer-events':'none'});t.textContent=labels?FACES[fi]+(i+1):i===4?FACES[fi]:'';
-   addSticker(svgNode('path',{d}),fi*9+i,t);
+  const point=RING_POINTS[state.indexOf(selected)];
+  for(const c of RING_CIRCLES){
+   const active=point?.loops.includes(c)||(focus&&BASIS[focus].n[c.axis]===c.layer&&c.layer!==0);
+   svg.append(svgNode('circle',{cx:c.x,cy:c.y,r:c.r,fill:'none',stroke:active?'#a5edd5':'#73818b','stroke-width':active?2.8:1.8,opacity:active?1:.6,'class':'ring-track','data-axis':c.axis,'data-layer':c.layer,'data-active':!!active,'pointer-events':'none'}));
   }
-  const t=svgNode('text',{x:160,y:164,'text-anchor':'middle','font-size':9,fill:'#89a0ad','font-family':'ui-monospace,monospace'});t.textContent='54';svg.append(t);
+  for(const [x,y,label]of [[200,11,'上下三层'],[67,395,'左右三层'],[333,395,'前后三层']]){
+   const t=svgNode('text',{x,y,'text-anchor':'middle','font-size':11,fill:'#a4b8c5'});t.textContent=label;svg.append(t);
+  }
+  RING_POINTS.forEach(({x,y},index)=>{
+   const t=svgNode('text',{x,y:y+3.2,'text-anchor':'middle','font-size':index%9===4?10:8.5,'font-family':'ui-monospace,monospace','font-weight':600,fill:'#152633','pointer-events':'none'});
+   t.textContent=index%9===4?SLOTS[index].face:labels?String(index%9+1):'';
+   addSticker(svgNode('circle',{cx:x,cy:y,r:7.8}),index,t);
+  });
  }
  container.replaceChildren(svg);
+ if(focused!==undefined)container.querySelector(`[data-slot="${focused}"]`)?.focus({preventScroll:true});
 }

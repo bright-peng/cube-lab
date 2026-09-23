@@ -25,10 +25,10 @@ const renderer=new CubeRenderer($('cube-canvas'),{
 });
 function renderVisuals(){
  renderer.setState(state);renderer.setSelection(selected);renderer.labels=labels;
+ $('map-description').textContent=view==='ring'?'三组圆 × 每组三层；54 个彩点就是 54 张贴纸。点选可高亮两条轨道，并在 3D 中定位；点「放大」看编号。':'一次看全六个面。点选色块，与 3D 视图交叉定位。';
  renderNet($('flat-view'),state,{mode:view,labels,selected,focus:renderer.focusFace,onSelect:slot=>{if(busy)return;selected=state[slot];renderVisuals();}});
  if($('map-dialog').open){renderNet($('expanded-flat-view'),state,{mode:view,labels:true,selected,focus:renderer.focusFace,onSelect:slot=>{if(busy)return;selected=state[slot];renderVisuals();}});$('expanded-description').textContent=$('map-description').textContent;}
  document.querySelectorAll('[data-view]').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);b.setAttribute('aria-pressed',String(b.dataset.view===view));});
- $('map-description').textContent=view==='ring'?'从内到外 U / R / F / D / L / B；每圈顺时针 1–9。编码位置，不表示真实相邻。':'一次看全六个面。点选色块，与 3D 视图交叉定位。';
  if(selected>=0){const pos=state.indexOf(selected),slot=SLOTS[pos],kind=slot.p.filter(v=>v!==0).length;const type=kind===3?'角块':kind===2?'棱块':'中心';$('selection-text').textContent=`${type} · ${COLOR_NAMES[FACES[Math.floor(selected/9)]]}贴纸 · 当前位置 ${slot.face}${pos%9+1} · 原位 ${FACES[Math.floor(selected/9)]}${selected%9+1}`;}
  else $('selection-text').textContent='黄色在上，绿色朝前，白色在下。';
  const solved=isSolved(state);$('cube-state').textContent=solved?'已复原':assisted?'引导中':'练习中';$('cube-state').classList.toggle('solved',solved);$('move-count').textContent=String(moveCount);$('timer').textContent=timeText(currentElapsed());
@@ -70,7 +70,7 @@ function renderPlayer(){
 }
 async function performMove(move,source='manual'){
  if(busy)return false;
- const before=snapshot();busy=true;renderer.focusFace=move[0];$('current-turn').hidden=false;$('current-turn').querySelector('b').textContent=move;$('current-turn').querySelector('span').textContent=describeMove(move);updateButtons();
+ const before=snapshot();busy=true;renderer.focusFace=move[0];$('current-turn').hidden=false;$('current-turn').querySelector('b').textContent=move;$('current-turn').querySelector('span').textContent=describeMove(move);renderVisuals();
  if(timerStart===null)timerStart=Date.now();
  try{
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -149,7 +149,7 @@ $('import-state').onclick=()=>{if(!blocked())$('import-file').click();};
 $('import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(blocked())throw new Error('请等待当前转动结束。');if(file.size>100000)throw new Error('进度文件过大。');const data=JSON.parse(await file.text());if(data.version!==1)throw new Error('不支持此进度格式。');const imported=validateState(data.state);if(blocked())throw new Error('当前正在转动，请稍后重新导入。');changeState(imported,{scrambleLabel:String(data.scramble||'导入的合法状态').slice(0,1500)});moveCount=Number.isSafeInteger(data.moves)&&data.moves>=0?data.moves:0;elapsed=Number.isFinite(data.elapsed)&&data.elapsed>=0?data.elapsed:0;assisted=!!data.assisted;renderVisuals();save();toast('进度已导入，并通过魔方物理合法性校验。');}catch(error){toast('无法导入：'+error.message);}finally{e.target.value='';}};
 $('copy-solution').onclick=async()=>{if(!plan)return;const text=plan.steps.map(s=>s.move).join(' ');try{await navigator.clipboard.writeText(text);toast('完整公式已复制。');}catch{download(text,'cube-lab-solution.txt','text/plain;charset=utf-8');toast('浏览器禁止剪贴板访问，已改为导出公式文本。');}};
 document.addEventListener('keydown',e=>{
- if(e.target.closest('input,textarea,select')||$('help-dialog').open)return;
+ if(e.defaultPrevented||e.target.closest('input,textarea,select')||$('help-dialog').open)return;
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();return;}
  if(e.ctrlKey||e.metaKey||e.altKey||e.repeat||page!=='play')return;
  if(e.code==='Space'&&!e.target.closest('button,a')){e.preventDefault();togglePlay();}
@@ -162,3 +162,5 @@ setInterval(()=>{if(timerStart!==null&&page==='play')$('timer').textContent=time
 renderVisuals();renderLesson();renderPlayer();save();
 // Read-only diagnostics for automated browser checks; no state mutation interface.
 globalThis.CubeLabDebug={snapshot:()=>({state:Array.from(state),solved:isSolved(state),moves:moveCount,busy,playing,solving,cursor,steps:plan?.steps.length||0,view,stageFlags:stageFlags(state),selected})};
+
+globalThis.render_game_to_text=()=>JSON.stringify(globalThis.CubeLabDebug.snapshot());
